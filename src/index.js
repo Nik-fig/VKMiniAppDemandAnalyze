@@ -3,6 +3,12 @@ import ReactDOM from "react-dom";
 
 import {Provider} from 'react-redux'
 import bridge from "@vkontakte/vk-bridge";
+import {
+    AdaptivityProvider,
+    ConfigProvider,
+    AppRoot,
+} from '@vkontakte/vkui';
+import '@vkontakte/vkui/dist/vkui.css';
 
 import {App} from "./App";
 import {store} from './redux/store';
@@ -23,7 +29,13 @@ const root = document.getElementById("root")
 
 const react_init = (
     <Provider store={store}>
-        <App/>
+        <ConfigProvider>
+            <AdaptivityProvider>
+                <AppRoot>
+                    <App/>
+                </AppRoot>
+            </AdaptivityProvider>
+        </ConfigProvider>
     </Provider>
 )
 
