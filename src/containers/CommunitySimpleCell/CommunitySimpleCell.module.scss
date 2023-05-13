@@ -1,0 +1,45 @@
+.communitySuccess {
+  display: grid;
+  grid-template-areas:
+          'img name'
+          'img desc';
+  grid-template-columns: 60px minmax(160px, 250px);
+
+  .communityImg {
+    grid-area: img;
+  }
+
+  .communityName {
+    grid-area: name;
+  }
+
+  .communityDesc {
+    grid-area: desc;
+    font-size: 14px;
+    color: darkgray;
+  }
+
+  .communityName, .communityDesc {
+    padding-left: 10px;
+  }
+}
+
+.communityFailed {
+  display: grid;
+  grid-template-areas:
+          'img type'
+          'img desc';
+  grid-template-columns: 60px minmax(160px, 250px);
+
+  .errorImg {
+    grid-area: img;
+  }
+
+  .errorType {
+    grid-area: type;
+  }
+
+  .errorDesc {
+    grid-area: desc;
+  }
+}

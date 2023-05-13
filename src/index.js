@@ -29,7 +29,7 @@ const root = document.getElementById("root")
 
 const react_init = (
     <Provider store={store}>
-        <ConfigProvider>
+        <ConfigProvider webviewType='internal'>
             <AdaptivityProvider>
                 <AppRoot>
                     <App/>

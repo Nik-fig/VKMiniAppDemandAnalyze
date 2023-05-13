@@ -1,20 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 let initialState = {
-    selectedCommunity: {
-        id: null,
-        photo: null,
-        name: 'Выберите сообщество'
-    },
+    selectedCommunityId: null,
+    selectedProductId: null,
 };
-
 
 const demandQuerySlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
         setUpCommunity: (state, action) => {
-            state.selectedCommunity = action.payload;
+            state.selectedCommunityId = action.payload;
         }
     },
 

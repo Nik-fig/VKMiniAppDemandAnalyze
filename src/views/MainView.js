@@ -1,11 +1,9 @@
-import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from 'react-redux';
 
 import {
     View,
     SplitLayout,
     SplitCol,
-    ScreenSpinner,
     ModalRoot
 } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css';
@@ -37,40 +35,13 @@ function ViewModalRoot() {
 export function MainView() {
     const dispatch = useDispatch();
     const {activePanel} = useSelector(state => state.panel);
-    const [popout, setPopout] = useState(null);
-
-    const {
-        accessToken: {
-            fetchStatus: {
-                loadingStatus,
-            }
-        }
-    } = useSelector(state => state.user);
 
     useConstructor(() => {
         dispatch(setUpPanel(COMMUNITY_SELECTION_PANEL_ID));
     })
 
-    useEffect(() => {
-        switch (loadingStatus) {
-            case 'loading':
-                setPopout(<ScreenSpinner state='loading'/>);
-                break;
-            case 'success':
-                setPopout(<ScreenSpinner state='done'/>);
-                setTimeout(() => setPopout(null), 1000);
-                break;
-            case 'failed':
-                setPopout(<ScreenSpinner state='error'/>);
-                setTimeout(() => setPopout(null), 1000);
-                break;
-        }
-    }, [loadingStatus])
-
-
     return (
         <SplitLayout
-            popout={popout}
             modal={<ViewModalRoot/>}
         >
             <SplitCol>

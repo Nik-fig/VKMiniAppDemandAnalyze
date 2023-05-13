@@ -6,117 +6,159 @@ import {
     ModalPage,
     ModalPageHeader,
     PanelSpinner,
+    SplitLayout,
+    SplitCol,
+    Alert,
 } from "@vkontakte/vkui";
 
-import bridge from "@vkontakte/vk-bridge";
+import {useConstructor} from "../utils/hooks/useConstructor";
 
-import {CommunitySimpleCell} from '../components/CommunitySimpleCell';
+import {CommunitySimpleCell} from '../containers/CommunitySimpleCell/CommunitySimpleCell';
+
+import {getCommunities} from '../utils/API/VK/getCommunities'
 
 import {setUpCommunity} from '../redux/slices/demandQuerySlice';
 import {setUpModal} from '../redux/slices/modalSlice'
+import {fetchUserToken} from "../redux/slices/userSlice";
+
 
 export const COMMUNITY_SELECTION_MODAL_ID = 'CommunitySelectionModal'
 
 export function CommunitySelectionModal() {
     const dispatch = useDispatch();
 
+    const [popout, setPopout] = useState(null);
+
     const [communitiesFetch, setCommunitiesFetch] = useState({
         items: null,
         loadingStatus: 'idle',
         error: null,
     });
-
     const {
         items: communities,
-        loadingStatus,
-        error,
+        loadingStatus: communitiesLoadingStatus,
+        error: communitiesError,
     } = communitiesFetch;
 
     const {
         accessToken: {
-            value: accessToken
+            value: accessToken,
+            scope: accessTokenScope,
+            fetchStatus: {
+                loadingStatus: accessTokenLoadingStatus,
+                error: accessTokenError,
+            },
         },
         userId,
     } = useSelector(state => state.user);
 
-    useEffect(() => {
-        setCommunitiesFetch({
-            ...communitiesFetch,
-            loadingStatus: 'loading',
-        });
-        bridge.send('VKWebAppCallAPIMethod', {
-            method: 'groups.get', params: {
-                access_token: accessToken,
-                user_ids: userId,
-                v: '5.131',
-                filter: 'admin',
-                extended: '1',
-                fields: ['id', 'name', 'photo_50',].join(',')
-            }
-        })
-            .then(data => {
-                    setCommunitiesFetch({
-                        ...communitiesFetch,
-                        items: data.response.items,
-                        loadingStatus: 'success',
-                    })
-                },
-                error => {
-                    console.error(error);
-                    setCommunitiesFetch({
-                        ...communitiesFetch,
-                        loadingStatus: 'failed',
-                        error: error
-                    })
-                }
-            )
-    }, [])
+
+    useConstructor(() => {
+        if (accessTokenScope.indexOf('groups') !== -1 && accessToken)
+            return;
+        dispatch(fetchUserToken({
+            scope: 'groups'
+        }))
+    });
 
     let template;
     let header;
 
-    switch (loadingStatus) {
-        case 'success':
-            header = 'Ваши администрируемые сообщества';
-            template = communities.map((value, index) => {
-                return (<CommunitySimpleCell
-                    key={index}
-
-                    id={value.id}
-                    photo={value.photo_50}
-                    name={value.name}
-
-                    onClick={() => {
-                        dispatch(setUpCommunity({
-                            id: value.id, photo: value.photo_50, name: value.name,
-                        }));
-                        dispatch(setUpModal(null));
-                    }}
-                />)
-            })
+    switch (accessTokenLoadingStatus) {
+        case 'loading':
+            header = 'Получаю доступ к сообществам'
+            template = (<PanelSpinner size='large'/>);
             break;
+        case 'success':
+            template = 'Токен получен';
+            break;
+        case 'failed':
+            if (popout)
+                break;
 
+            setPopout(
+                <Alert
+                    onClose={() => setPopout(null)}
+                    header={accessTokenError.error_type}
+                    text={
+                        `Code ${accessTokenError.error_data.error_type}: ${accessTokenError.error_data.error_msg}`
+                    }
+                />
+            );
+            break;
+    }
+
+    useEffect(() => {
+        if (!accessToken)
+            return
+
+        setCommunitiesFetch({
+            ...communitiesFetch, loadingStatus: 'loading',
+        });
+
+        getCommunities({accessToken: accessToken, userId: userId})
+            .then(data => {
+                setCommunitiesFetch({
+                    ...communitiesFetch, items: data.response.items, loadingStatus: 'success',
+                })
+            }, error => {
+                console.error(error);
+                setCommunitiesFetch({
+                    ...communitiesFetch, loadingStatus: 'failed', error: error
+                })
+            })
+    }, [accessToken]);
+
+    switch (communitiesLoadingStatus) {
         case 'loading':
             header = 'Получаю ваши сообщества';
             template = (<PanelSpinner size='large'/>);
             break;
 
-        case 'failed':
-            header = 'Ошибка';
-            template = error;
+        case 'success':
+            header = 'Ваши администрируемые сообщества';
+            template = communities.map((value, index) => {
+                return (
+                    <CommunitySimpleCell
+                        key={value}
+                        id={value}
+                        onClick={() => {
+                            dispatch(setUpModal(null));
+                            dispatch(setUpCommunity(value));
+                        }}/>
+                )
+            })
             break;
-        default:
-            template = ('У вас нет администрируемых сообществ');
+
+        case 'failed':
+            if (popout)
+                break;
+            setPopout(
+                <Alert
+                    onClose={() => setPopout(null)}
+                    header={communitiesError.error_type}
+                    text={
+                        `Code ${communitiesError.error_data.error_type}: ${communitiesError.error_data.error_msg}`
+                    }
+                />
+            )
             break;
     }
 
-
-    return (<ModalPage
-        id={COMMUNITY_SELECTION_MODAL_ID}
-    >
-        <ModalPageHeader>{header}</ModalPageHeader>
-        <Group>
-            {template}
-        </Group>
-    </ModalPage>)
+    return (
+        <SplitLayout
+            popout={popout}
+        >
+            <SplitCol>
+                <ModalPage
+                    id={COMMUNITY_SELECTION_MODAL_ID}
+                >
+                    <ModalPageHeader>{header}</ModalPageHeader>
+                    <Group>
+                        {template}
+                    </Group>
+                </ModalPage>
+            </SplitCol>
+        </SplitLayout>
+    )
 }
