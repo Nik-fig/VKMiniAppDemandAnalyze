@@ -7,18 +7,19 @@ import {
     ModalPageHeader,
     PanelSpinner,
     SplitLayout,
-    SplitCol,
-    Alert,
+    SplitCol, Text,
 } from "@vkontakte/vkui";
 
 import {useConstructor} from "../utils/hooks/useConstructor";
 
-import {CommunitySimpleCell} from '../containers/CommunitySimpleCell/CommunitySimpleCell';
+import {CommunitySimpleCell} from '../components/CommunitySimpleCell/CommunitySimpleCell';
 
-import {getCommunities} from '../utils/API/VK/getCommunities'
+import {getCommunities} from '../utils/api/vk/services/community'
 
 import {setUpCommunity} from '../redux/slices/demandQuerySlice';
-import {setUpModal} from '../redux/slices/modalSlice'
+import {setUpModal} from '../redux/slices/modalSlice';
+import {setUpProduct} from '../redux/slices/demandQuerySlice';
+
 import {fetchUserToken} from "../redux/slices/userSlice";
 
 
@@ -26,8 +27,6 @@ export const COMMUNITY_SELECTION_MODAL_ID = 'CommunitySelectionModal'
 
 export function CommunitySelectionModal() {
     const dispatch = useDispatch();
-
-    const [popout, setPopout] = useState(null);
 
     const [communitiesFetch, setCommunitiesFetch] = useState({
         items: null,
@@ -70,21 +69,12 @@ export function CommunitySelectionModal() {
             template = (<PanelSpinner size='large'/>);
             break;
         case 'success':
-            template = 'Токен получен';
+            header='Успех'
+            template = 'Доступ к сообществам получен';
             break;
         case 'failed':
-            if (popout)
-                break;
-
-            setPopout(
-                <Alert
-                    onClose={() => setPopout(null)}
-                    header={accessTokenError.error_type}
-                    text={
-                        `Code ${accessTokenError.error_data.error_type}: ${accessTokenError.error_data.error_msg}`
-                    }
-                />
-            );
+            header = <Text>{accessTokenError.error_data.error_code}: {accessTokenError.error_type}</Text>
+            template = <Text>{accessTokenError.error_data.error_msg}</Text>
             break;
     }
 
@@ -125,36 +115,31 @@ export function CommunitySelectionModal() {
                         onClick={() => {
                             dispatch(setUpModal(null));
                             dispatch(setUpCommunity(value));
-                        }}/>
+                            dispatch(setUpProduct(null));
+                        }}
+                    />
                 )
             })
             break;
 
         case 'failed':
-            if (popout)
-                break;
-            setPopout(
-                <Alert
-                    onClose={() => setPopout(null)}
-                    header={communitiesError.error_type}
-                    text={
-                        `Code ${communitiesError.error_data.error_type}: ${communitiesError.error_data.error_msg}`
-                    }
-                />
-            )
+            header = <Text>{communitiesError.error_data.error_code}: {communitiesError.error_type}</Text>
+            template = <Text>{communitiesError.error_data.error_msg}</Text>
             break;
     }
 
     return (
-        <SplitLayout
-            popout={popout}
-        >
+        <SplitLayout>
             <SplitCol>
                 <ModalPage
                     id={COMMUNITY_SELECTION_MODAL_ID}
                 >
                     <ModalPageHeader>{header}</ModalPageHeader>
-                    <Group>
+                    <Group style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}>
                         {template}
                     </Group>
                 </ModalPage>

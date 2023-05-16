@@ -1,0 +1,22 @@
+.community {
+  display: grid;
+  grid-template-areas: "img name" "img desc";
+  grid-template-columns: 60px auto;
+  margin: 0 10px;
+}
+.community .communityImg {
+  grid-area: img;
+}
+.community .communityName {
+  grid-area: name;
+}
+.community .communityDesc {
+  grid-area: desc;
+  font-size: 14px;
+  color: darkgray;
+}
+.community .communityName, .community .communityDesc {
+  padding-left: 10px;
+}
+
+/*# sourceMappingURL=CommunitySimpleCell.module.css.map */

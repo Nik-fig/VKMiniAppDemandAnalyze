@@ -1,0 +1,36 @@
+.product {
+  display: grid;
+  grid-template: "img title cost" "img sku cost" "img desc desc";
+  grid-template-columns: 200px 300px 100px;
+  grid-template-rows: 1fr 1fr 3fr;
+}
+.product .productImage {
+  grid-area: img;
+}
+.product .productImage img {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+}
+.product .productTitle {
+  grid-area: title;
+  font-size: 20px;
+  font-weight: bold;
+}
+.product .productDesc {
+  grid-area: desc;
+}
+.product .productCost {
+  grid-area: cost;
+  text-align: center;
+  font-size: 22px;
+}
+.product .productSku {
+  grid-area: sku;
+  color: darkgray;
+}
+.product .productDesc, .product .productDesc, .product .productTitle, .product .productSku {
+  padding-left: 10px;
+}
+
+/*# sourceMappingURL=ProductSelected.module.css.map */

@@ -1,0 +1,28 @@
+.community {
+  display: grid;
+  grid-template-areas:
+          'img name'
+          'img desc';
+  grid-template-columns: 60px auto;
+
+  margin: 0 10px;
+
+  .communityImg {
+    grid-area: img;
+  }
+
+  .communityName {
+    grid-area: name;
+  }
+
+  .communityDesc {
+    grid-area: desc;
+    font-size: 14px;
+    color: darkgray;
+  }
+
+  .communityName, .communityDesc {
+    padding-left: 10px;
+  }
+}
+

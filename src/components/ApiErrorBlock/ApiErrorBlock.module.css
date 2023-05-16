@@ -1,0 +1,24 @@
+.error {
+  display: grid;
+  grid-template-areas: "title" "desc";
+  margin: 10px;
+}
+.error .errorImg {
+  grid-area: img;
+  margin: auto;
+}
+.error .errorTitle {
+  grid-area: title;
+  background-color: lightcoral;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.error .errorDesc {
+  grid-area: desc;
+}
+
+.errorMsg {
+  font-size: 14px;
+}
+
+/*# sourceMappingURL=ApiErrorBlock.module.css.map */

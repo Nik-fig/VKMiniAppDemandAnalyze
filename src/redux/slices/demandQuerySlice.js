@@ -11,6 +11,9 @@ const demandQuerySlice = createSlice({
     reducers: {
         setUpCommunity: (state, action) => {
             state.selectedCommunityId = action.payload;
+        },
+        setUpProduct: (state, action) => {
+          state.selectedProductId = action.payload;
         }
     },
 
@@ -18,7 +21,8 @@ const demandQuerySlice = createSlice({
 const {actions, reducer} = demandQuerySlice;
 
 export const {
-    setUpCommunity
+    setUpCommunity,
+    setUpProduct
 } = actions;
 
 export {reducer as demandQueryReducer};

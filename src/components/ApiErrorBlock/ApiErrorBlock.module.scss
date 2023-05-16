@@ -1,0 +1,34 @@
+.error {
+  display: grid;
+  grid-template-areas:
+          'title'
+          'desc';
+  margin: 10px;
+
+  .errorImg {
+    grid-area: img;
+    margin: auto;
+  }
+
+  .errorTitle {
+    grid-area: title;
+
+    background-color: lightcoral;
+    text-transform: uppercase;
+
+    font-weight: bold;
+  }
+
+  .errorDesc {
+    grid-area: desc;
+  }
+
+}
+
+.errorCode {
+
+}
+
+.errorMsg {
+  font-size: 14px;
+}

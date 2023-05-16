@@ -1,0 +1,50 @@
+.product {
+  display: grid;
+  grid-template:
+          "img title cost"
+          "img sku cost"
+          "img desc desc";
+  grid-template-columns: 200px 300px 100px;
+  grid-template-rows:
+          1fr
+          1fr
+          3fr
+  ;
+
+  .productImage {
+    grid-area: img;
+
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+
+      border-radius: 10px;
+    }
+  }
+
+  .productTitle {
+    grid-area: title;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .productDesc {
+    grid-area: desc;
+  }
+
+  .productCost {
+    grid-area: cost;
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .productSku {
+    grid-area: sku;
+    color: darkgray;
+  }
+
+  .productDesc, .productDesc, .productTitle, .productSku {
+    padding-left: 10px;
+  }
+}
