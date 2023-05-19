@@ -24,7 +24,7 @@ export const PRODUCT_SELECTION_MODAL_ID = 'ProductSelectionModal';
 
 export function ProductSelectionModal() {
     const dispatch = useDispatch();
-    
+
     const {
         accessToken: {
             value: accessToken,
@@ -148,24 +148,22 @@ export function ProductSelectionModal() {
     }
 
     return (
-        <SplitLayout>
-            <SplitCol>
-                <ModalPage
-                    id={PRODUCT_SELECTION_MODAL_ID}
-                >
-                    <ModalPageHeader>{header}</ModalPageHeader>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(2, 200px)',
-                            gridGap: '15px',
-                            margin: '10px',
-                        }}
-                    >
-                        {template}
-                    </div>
-                </ModalPage>
-            </SplitCol>
-        </SplitLayout>
+        <ModalPage
+            id={PRODUCT_SELECTION_MODAL_ID}
+            dynamicContentHeight={true}
+            size={'l'}
+        >
+            <ModalPageHeader>{header}</ModalPageHeader>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, auto)',
+                    gridGap: '15px',
+                    margin: '10px',
+                }}
+            >
+                {template}
+            </div>
+        </ModalPage>
     )
 }

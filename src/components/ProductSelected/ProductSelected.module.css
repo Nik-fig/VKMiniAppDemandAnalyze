@@ -1,8 +1,10 @@
 .product {
   display: grid;
   grid-template: "img title cost" "img sku cost" "img desc desc";
-  grid-template-columns: 200px 300px 100px;
+  grid-template-columns: 200px auto 100px;
   grid-template-rows: 1fr 1fr 3fr;
+  font-family: --palette-vk-font, -apple-system, system-ui, Helvetica Neue, Roboto, sans-serif;
+  padding: 10px;
 }
 .product .productImage {
   grid-area: img;
@@ -23,13 +25,13 @@
 .product .productCost {
   grid-area: cost;
   text-align: center;
-  font-size: 22px;
+  font-size: 24px;
 }
 .product .productSku {
   grid-area: sku;
   color: darkgray;
 }
-.product .productDesc, .product .productDesc, .product .productTitle, .product .productSku {
+.product .productDesc, .product .productTitle, .product .productSku {
   padding-left: 10px;
 }
 

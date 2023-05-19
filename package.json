@@ -26,7 +26,8 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-redux": "^8.0.5",
-        "react-router-dom": "^6.11.1"
+        "react-router-dom": "^6.11.1",
+        "zingchart-react": "^3.1.4"
     },
     "devDependencies": {
         "cross-env": "^7.0.3",

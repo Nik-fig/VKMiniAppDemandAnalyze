@@ -4,8 +4,11 @@ import {
     Tabs,
     TabsItem
 } from '@vkontakte/vkui';
-import {Icon28MarketOutline} from '@vkontakte/icons';
-import {Icon28Users} from '@vkontakte/icons';
+import {
+    Icon28MarketOutline,
+    Icon28Users,
+    Icon28StatisticsOutline
+} from '@vkontakte/icons';
 
 import {PRODUCT_SELECTION_PANEL_ID} from '../panels/ProductSelectionPanel';
 import {COMMUNITY_SELECTION_PANEL_ID} from '../panels/CommunitySelectionPanel';

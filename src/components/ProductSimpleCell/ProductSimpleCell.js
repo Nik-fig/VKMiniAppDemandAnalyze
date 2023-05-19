@@ -31,7 +31,7 @@ function ProductSimpleCellTemplate({onClick, product}) {
     );
 
     return (
-        <Tappable
+        <div
             className={styles.product}
             onClick={onClick}
         >
@@ -44,7 +44,7 @@ function ProductSimpleCellTemplate({onClick, product}) {
             <div className={styles.productSku}>
                 {sku}
             </div>
-        </Tappable>
+        </div>
     )
 }
 
