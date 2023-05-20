@@ -1,0 +1,16 @@
+.community {
+  display: grid;
+  grid-template: "title" "img";
+  padding: 10px;
+}
+.community .communityImage {
+  grid-area: img;
+  margin: auto;
+}
+.community .communityTitle {
+  grid-area: title;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/*# sourceMappingURL=CommunitySelectedSmall.module.css.map */

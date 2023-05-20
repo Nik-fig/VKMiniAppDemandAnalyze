@@ -1,0 +1,23 @@
+
+.community {
+  display: grid;
+  grid-template:
+          "title"
+          "img";
+
+  padding: 10px;
+
+  .communityImage {
+    grid-area: img;
+
+    margin: auto;
+
+  }
+
+  .communityTitle {
+    grid-area: title;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+}

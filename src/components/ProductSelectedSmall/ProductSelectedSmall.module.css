@@ -1,0 +1,20 @@
+.product {
+  display: grid;
+  grid-template: "title" "img";
+  padding: 10px;
+}
+.product .productImage {
+  grid-area: img;
+}
+.product .productImage img {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+}
+.product .productTitle {
+  grid-area: title;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/*# sourceMappingURL=ProductSelectedSmall.module.css.map */

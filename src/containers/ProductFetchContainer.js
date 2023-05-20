@@ -6,7 +6,7 @@ import {
     PanelSpinner,
 } from "@vkontakte/vkui";
 
-import {productObject, getProductsById} from '../utils/api/vk/services/product'
+import {productObject, getProductById} from '../utils/api/vk/services/product'
 
 import {ApiErrorBlock} from '../components/ApiErrorBlock/ApiErrorBlock'
 
@@ -41,10 +41,10 @@ function ProductFetchContainer({RenderElement}) {
                 error: null,
             })
 
-            getProductsById({
+            getProductById({
                     id: this.props.id,
                     accessToken: accessToken,
-                    selectedCommunityId: selectedCommunityId,
+                    productCommunityId: selectedCommunityId,
                 }
             )
                 .then(data => {

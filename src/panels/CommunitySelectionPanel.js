@@ -7,6 +7,7 @@ import {
     Panel,
     PanelHeader,
     SimpleCell,
+    Tappable,
 } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css';
 import {Icon28UsersOutline} from "@vkontakte/icons";
@@ -42,15 +43,19 @@ export function CommunitySelectionPanel() {
     const {selectedCommunityId} = useSelector(state => state.demandQuery);
 
     const template = (
-        selectedCommunityId
-            ? <CommunitySimpleCell
-                key={selectedCommunityId}
-                id={selectedCommunityId}
-                onClick={() => dispatch(setUpModal(COMMUNITY_SELECTION_MODAL_ID))}
-            />
-            : <EmptyCommunitySimpleCell onClick={
-                () => dispatch(setUpModal(COMMUNITY_SELECTION_MODAL_ID))
-            }/>
+        <Tappable>
+            {
+                selectedCommunityId
+                    ? <CommunitySimpleCell
+                        key={selectedCommunityId}
+                        id={selectedCommunityId}
+                        onClick={() => dispatch(setUpModal(COMMUNITY_SELECTION_MODAL_ID))}
+                    />
+                    : <EmptyCommunitySimpleCell onClick={
+                        () => dispatch(setUpModal(COMMUNITY_SELECTION_MODAL_ID))
+                    }/>
+            }
+        </Tappable>
     )
 
 

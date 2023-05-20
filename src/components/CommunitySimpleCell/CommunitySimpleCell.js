@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 import {
-    Avatar, Div, Tappable,
+    Avatar,
 } from "@vkontakte/vkui";
 import {Icon28UsersOutline} from "@vkontakte/icons";
 
@@ -30,8 +30,8 @@ function CommunitySimpleCellTemplate({onClick, community}) {
 
     const description = `${activity}, ${membersCount} ${membersTitle}`
 
-    return (<Tappable>
-        <Div
+    return (
+        <div
             className={styles.community}
             onClick={onClick}
         >
@@ -46,8 +46,8 @@ function CommunitySimpleCellTemplate({onClick, community}) {
             <div className={styles.communityDesc}>
                 {description}
             </div>
-        </Div>
-    </Tappable>)
+        </div>
+    )
 }
 
 const CommunitySimpleCell = CommunityFetchContainer({

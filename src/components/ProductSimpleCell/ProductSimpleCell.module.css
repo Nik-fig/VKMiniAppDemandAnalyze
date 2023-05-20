@@ -4,13 +4,14 @@
   margin: auto;
   padding: 0 10px 10px 10px;
   transition-duration: 0.2s;
+  max-width: 150px;
 }
 .product .productImage {
   grid-area: img;
   margin: auto;
   margin-top: 5px;
-  max-height: 150px;
-  max-width: 150px;
+  max-height: 100%;
+  max-width: 100%;
 }
 .product .productImage img {
   max-width: 100%;
@@ -31,16 +32,6 @@
   grid-area: sku;
   color: #7f7f7f;
   font-size: 13px;
-}
-
-.product:hover {
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.18);
-  transition-duration: 0.2s;
-}
-.product:hover .productImage {
-  border: none;
 }
 
 /*# sourceMappingURL=ProductSimpleCell.module.css.map */

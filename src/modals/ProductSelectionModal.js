@@ -3,15 +3,16 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {
     PanelSpinner,
-    SplitLayout,
-    SplitCol,
     ModalPage,
-    ModalPageHeader, Text,
+    ModalPageHeader,
+    Text,
+    IconButton, Tappable,
 } from "@vkontakte/vkui";
+import {Icon28SwitchOutline} from '@vkontakte/icons';
 
 import {useConstructor} from "../utils/hooks/useConstructor";
 
-import {getProducts} from "../utils/api/vk/services/product";
+import {getProductsByCommunityId} from "../utils/api/vk/services/product";
 
 import {ProductSimpleCell} from '../components/ProductSimpleCell/ProductSimpleCell'
 
@@ -54,48 +55,22 @@ export function ProductSelectionModal() {
 
 
     useConstructor(() => {
-        if (accessTokenScope.indexOf('market') !== -1)
+        if (accessToken && accessTokenScope.includes('market'))
             return;
+
         dispatch(fetchUserToken({scope: 'market'}));
     })
 
-    let header;
-    let template;
-
-    switch (accessTokenLoadingStatus) {
-        case 'loading':
-            header = 'Получаю доступ к товарам'
-            template = (<PanelSpinner size='large'/>);
-            break;
-        case 'success':
-            header = 'Успех'
-            template = 'Доступ к товарам получен';
-            break;
-        case 'failed':
-            header = <Text>{accessTokenError.error_data.error_code}: {accessTokenError.error_type}</Text>
-            template = <Text>{accessTokenError.error_data.error_msg}</Text>
-            break;
-    }
-
-    useEffect(() => {
-        if (!accessToken)
-            return;
-
-        setProductsFetch({
-            items: null,
-            loadingStatus: 'loading',
-            error: null,
-        });
-
-        getProducts({
+    function getProductsFetch() {
+        getProductsByCommunityId({
             accessToken: accessToken,
-            selectedCommunityId: selectedCommunityId
+            communityId: selectedCommunityId
         })
             .then(data => {
                 let items;
 
                 if (data.response.items.length)
-                    items = data.response.items.map((value, index) => {
+                    items = data.response.items.map((value) => {
                         return value.id
                     })
                 else
@@ -113,8 +88,50 @@ export function ProductSelectionModal() {
                     error: error
                 })
             })
+    }
+
+    useEffect(() => {
+        if (!accessToken || !accessTokenScope.includes('market'))
+            return;
+
+        setProductsFetch({
+            items: null,
+            loadingStatus: 'loading',
+            error: null,
+        });
+
+        getProductsFetch();
 
     }, [accessToken])
+
+
+    let header;
+    let template;
+    let modalHeaderAfter;
+
+    switch (accessTokenLoadingStatus) {
+        case 'loading':
+            header = 'Получаю токе доступа к товарам'
+            template = (<PanelSpinner size='large'/>);
+            break;
+        case 'success':
+            header = 'Успех'
+            template = 'Токен доступа к товарам получен';
+            break;
+        case 'failed':
+            header = <Text>{accessTokenError.error_data.error_code}: {accessTokenError.error_type}</Text>
+            template = <Text>{accessTokenError.error_data.error_msg}</Text>
+            modalHeaderAfter = (
+                <IconButton
+                    onClick={() => {
+                        dispatch(fetchUserToken({scope: 'market'}))
+                    }}
+                >
+                    <Icon28SwitchOutline/>
+                </IconButton>
+            )
+            break;
+    }
 
     switch (productsLoadingStatus) {
         case 'loading':
@@ -127,24 +144,50 @@ export function ProductSelectionModal() {
                 template = 'У вас нет товаров';
                 break;
             }
-            template = products.map((value, index) => {
+            const productsBlocks = products.map((value) => {
                 return (
-                    <ProductSimpleCell
+                    <Tappable
                         key={value}
-                        id={value}
-                        onClick={() => {
-                            dispatch(setUpModal(null));
-                            dispatch(setUpProduct(value));
-                        }}
-                    />
+                    >
+                        <ProductSimpleCell
+
+                            id={value}
+                            onClick={() => {
+                                dispatch(setUpModal(null));
+                                dispatch(setUpProduct(value));
+                            }}
+                        />
+                    </Tappable>
                 )
             })
+
+            template = (
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, auto)',
+                        gridGap: '15px',
+                        margin: '10px',
+                    }}
+                >
+                    {productsBlocks}
+                </div>
+            )
+
             break;
         case  'failed':
             header = <Text>{productsError.error_data.error_code}: {productsError.error_type}</Text>
             template = <Text>{productsError.error_data.error_msg}</Text>
+            modalHeaderAfter = (
+                <IconButton
+                    onClick={() => {
+                        getProductsFetch()
+                    }}
+                >
+                    <Icon28SwitchOutline/>
+                </IconButton>
+            )
             break;
-
     }
 
     return (
@@ -153,17 +196,12 @@ export function ProductSelectionModal() {
             dynamicContentHeight={true}
             size={'l'}
         >
-            <ModalPageHeader>{header}</ModalPageHeader>
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, auto)',
-                    gridGap: '15px',
-                    margin: '10px',
-                }}
+            <ModalPageHeader
+                after={modalHeaderAfter}
             >
-                {template}
-            </div>
+                {header}
+            </ModalPageHeader>
+            {template}
         </ModalPage>
     )
 }

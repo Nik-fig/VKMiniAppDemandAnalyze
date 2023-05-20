@@ -3,13 +3,20 @@ import bridge from "@vkontakte/vk-bridge";
 
 import {APP_ID} from '../../utils/constants'
 
+import {ApiError} from '../../utils/errors/ApiError'
+
 const fetchUserToken = createAsyncThunk(
     'user/getAccessToken',
     async ({scope}) => {
-        return await bridge.send('VKWebAppGetAuthToken', {
-            app_id: APP_ID,
-            scope: scope,
-        });
+        try {
+            return await bridge.send('VKWebAppGetAuthToken', {
+                app_id: APP_ID,
+                scope: scope,
+            });
+        } catch (err) {
+            throw new ApiError(err);
+        }
+
     }
 )
 

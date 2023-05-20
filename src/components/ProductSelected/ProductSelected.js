@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 
 import {
-    Div, Placeholder, Tappable
-
+    Placeholder,
 } from '@vkontakte/vkui';
 import {Icon56MarketOutline} from '@vkontakte/icons';
 
@@ -24,31 +23,31 @@ function ProductSelectedTemplate({onClick, product}) {
 
     );
     return (
-        <Tappable onClick={onClick}>
-            <div
-                style={{
-                    display: 'inline-block',
-                }}
-            >
-                <div className={styles.product}>
-                    <div className={styles.productImage}>
-                        {template}
-                    </div>
-                    <div className={styles.productTitle}>
-                        {title}
-                    </div>
-                    <div className={styles.productDesc}>
-                        {description}
-                    </div>
-                    <div className={styles.productCost}>
-                        {price.text}
-                    </div>
-                    <div className={styles.productSku}>
-                        {sku}
-                    </div>
+        <div
+            style={{
+                display: 'inline-block',
+            }}
+            onClick={onClick}
+        >
+            <div className={styles.product}>
+                <div className={styles.productImage}>
+                    {template}
+                </div>
+                <div className={styles.productTitle}>
+                    {title}
+                </div>
+                <div className={styles.productDesc}>
+                    {description}
+                </div>
+                <div className={styles.productCost}>
+                    {price.text}
+                </div>
+                <div className={styles.productSku}>
+                    {sku}
                 </div>
             </div>
-        </Tappable>)
+        </div>
+    )
 }
 
 const ProductSelected = ProductFetchContainer({

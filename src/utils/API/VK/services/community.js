@@ -1,5 +1,7 @@
 import bridge from "@vkontakte/vk-bridge";
 
+import {VK_API_VERSION} from '../../../constants'
+
 export const communityObject = {
     id: null,
     name: null,
@@ -64,7 +66,7 @@ export function getCommunities({accessToken, userId}) {
         method: 'groups.get', params: {
             access_token: accessToken,
             user_ids: userId,
-            v: '5.131',
+            v: VK_API_VERSION,
             filter: 'admin',
         }
     })
@@ -74,7 +76,7 @@ export function getCommunityById({id, fields, accessToken}) {
     return bridge.send('VKWebAppCallAPIMethod', {
         method: 'groups.getById', params: {
             access_token: accessToken,
-            v: '5.131',
+            v: VK_API_VERSION,
             group_id: id,
             fields: fields.join(',')
         }

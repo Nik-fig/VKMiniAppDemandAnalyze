@@ -12,6 +12,7 @@ import {
     SimpleCell,
     Placeholder,
     Text,
+    Tappable
 } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css';
 import {Icon56MarketOutline} from "@vkontakte/icons";
@@ -78,13 +79,15 @@ export function ProductSelectionPanel() {
 
     const template = (
         selectedProductId
-            ? <ProductSelected
-                key={selectedProductId}
-                id={selectedProductId}
-                onClick={
-                    () => dispatch(setUpModal(PRODUCT_SELECTION_MODAL_ID))
-                }
-            />
+            ? <Tappable>
+                <ProductSelected
+                    key={selectedProductId}
+                    id={selectedProductId}
+                    onClick={
+                        () => dispatch(setUpModal(PRODUCT_SELECTION_MODAL_ID))
+                    }
+                />
+            </Tappable>
             : <EmptyProductSimpleCell onClick={
                 () => dispatch(setUpModal(PRODUCT_SELECTION_MODAL_ID))
             }/>
