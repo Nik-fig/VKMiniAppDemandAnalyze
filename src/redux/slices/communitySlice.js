@@ -3,6 +3,8 @@ import bridge from "@vkontakte/vk-bridge";
 
 import {APP_ID} from '../../utils/constants';
 
+import {ApiError} from '../../utils/errors/ApiError'
+
 const fetchCommunityToken = createAsyncThunk(
     'community/getCommunityToken',
     async ({scope, groupId}) => {
@@ -15,7 +17,7 @@ const fetchCommunityToken = createAsyncThunk(
             });
         } catch (err) {
             console.error(err);
-            throw err;
+            throw new ApiError(err);
         }
     }
 )
@@ -39,6 +41,7 @@ const communitySlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchCommunityToken.pending, (state) => {
+                state.accessToken.value = null;
                 state.accessToken.fetchStatus.error = null;
                 state.accessToken.fetchStatus.loadingStatus = 'loading';
             })
@@ -50,8 +53,8 @@ const communitySlice = createSlice({
                 state.accessToken.fetchStatus.loadingStatus = 'success';
             })
             .addCase(fetchCommunityToken.rejected, (state, action) => {
-
                 console.error(action.error);
+                state.accessToken.value = null;
                 state.accessToken.fetchStatus.error = action.error;
                 state.accessToken.fetchStatus.loadingStatus = 'failed';
             })

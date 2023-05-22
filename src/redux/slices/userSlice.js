@@ -45,6 +45,8 @@ const userSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchUserToken.pending, (state) => {
+                state.accessToken.value = null;
+
                 state.accessToken.fetchStatus.error = null;
                 state.accessToken.fetchStatus.loadingStatus = 'loading';
             })
@@ -59,6 +61,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchUserToken.rejected, (state, action) => {
                 console.log(action.error);
+                state.accessToken.value = null;
                 state.accessToken.fetchStatus.error = action.error;
                 state.accessToken.fetchStatus.loadingStatus = 'failed';
             })

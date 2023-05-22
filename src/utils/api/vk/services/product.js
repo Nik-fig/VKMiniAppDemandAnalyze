@@ -1,5 +1,6 @@
 import bridge from '@vkontakte/vk-bridge';
 
+import {VK_API_VERSION} from '../../../constants'
 export const productObject = {
     id: null,
     owner_id: null,
@@ -24,27 +25,27 @@ export const productObject = {
     button_title: null,
 }
 
-export function getProductsById({
+export function getProductById({
                                     accessToken,
-                                    selectedCommunityId,
+                                    productCommunityId,
                                     id,
                                 }) {
-    const communityId = '-' + selectedCommunityId;
+    const communityId = '-' + productCommunityId;
     return bridge.send('VKWebAppCallAPIMethod', {
         method: 'market.getById', params: {
             access_token: accessToken,
-            v: '5.131',
+            v: VK_API_VERSION,
             item_ids: `${communityId}_${id}`
         }
     })
 }
 
-export function getProducts({accessToken, selectedCommunityId}) {
+export function getProductsByCommunityId({accessToken, communityId}) {
     return bridge.send('VKWebAppCallAPIMethod', {
         method: 'market.get', params: {
             access_token: accessToken,
-            owner_id: '-' + selectedCommunityId,
-            v: '5.131',
+            owner_id: '-' + communityId,
+            v: VK_API_VERSION,
         }
     })
 }

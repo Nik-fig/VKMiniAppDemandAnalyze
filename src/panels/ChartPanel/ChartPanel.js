@@ -15,6 +15,7 @@ import {
 import {MainViewTabs} from '../../containers/MainViewTabs';
 
 import {ApiErrorBlock} from '../../components/ApiErrorBlock/ApiErrorBlock';
+import {Chart} from '../../components/Chart/Chart'
 
 import {FiltersBlock} from './FiltersBlock';
 
@@ -101,6 +102,9 @@ export function ChartPanel() {
     }, [])
 
     useConstructor(() => {
+        if (!selectedCommunityId || !selectedProductId)
+            return;
+
         if (userAccessToken)
             return;
 
@@ -108,7 +112,13 @@ export function ChartPanel() {
     })
 
     useEffect(() => {
-        if (!userAccessToken || !selectedCommunityId)
+        if (!selectedCommunityId || !selectedProductId)
+            return;
+
+        if (communityAccessToken)
+            return;
+
+        if (!userAccessToken)
             return;
 
         dispatch(fetchCommunityToken({
@@ -125,7 +135,8 @@ export function ChartPanel() {
             template = <LoadingBlock title={'Получаю ваш токен доступа'}/>
             break;
         case 'success':
-            template = 'Ваш токе доступа получен'
+            if (selectedProductId && selectedCommunityId)
+                template = 'Ваш токен доступа получен'
             break;
         case 'failed':
             template = <ApiErrorBlock error={userAccessTokenError}/>
@@ -137,7 +148,8 @@ export function ChartPanel() {
             template = <LoadingBlock title={'Получаю доступ к сообществу'}/>
             break;
         case 'success':
-            template = 'Доступ к сообществу получен'
+            if (selectedProductId && selectedCommunityId)
+                template = <Chart/>
             break;
         case 'failed':
             template = <ApiErrorBlock error={userAccessTokenError}/>
